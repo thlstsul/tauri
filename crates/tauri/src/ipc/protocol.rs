@@ -499,6 +499,7 @@ fn parse_invoke_request<R: Runtime>(
       if url.is_empty() {
         url = "http://ipc.localhost";
       }
+      url
     }
   )
   .map_err(|_| "Origin header is not a valid URL")?;
