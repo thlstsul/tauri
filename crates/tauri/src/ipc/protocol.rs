@@ -489,12 +489,17 @@ fn parse_invoke_request<R: Runtime>(
     .to_owned();
 
   let url = Url::parse(
-    parts
+    {
+      let mut url = parts
       .headers
       .get("Origin")
       .ok_or("missing Origin header")?
       .to_str()
-      .map_err(|_| "Origin header value must be a string")?,
+      .map_err(|_| "Origin header value must be a string")?;
+      if url.is_empty() {
+        url = "http://ipc.localhost";
+      }
+    }
   )
   .map_err(|_| "Origin header is not a valid URL")?;
 
