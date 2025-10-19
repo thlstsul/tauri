@@ -488,20 +488,18 @@ fn parse_invoke_request<R: Runtime>(
     .map_err(|_| "Tauri invoke key header value must be a string")?
     .to_owned();
 
-  let url = Url::parse(
-    {
-      let mut url = parts
+  let url = Url::parse({
+    let mut url = parts
       .headers
       .get("Origin")
       .ok_or("missing Origin header")?
       .to_str()
       .map_err(|_| "Origin header value must be a string")?;
-      if url.is_empty() {
-        url = "http://ipc.localhost";
-      }
-      url
+    if url.is_empty() || url == "null" {
+      url = "http://ipc.localhost";
     }
-  )
+    url
+  })
   .map_err(|_| "Origin header is not a valid URL")?;
 
   let callback = CallbackFn(
