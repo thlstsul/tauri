@@ -387,7 +387,7 @@ impl AppHandle<crate::Wry> {
 
 #[cfg(target_vendor = "apple")]
 impl<R: Runtime> AppHandle<R> {
-  /// Fetches all Data Store Indentifiers by this app
+  /// Fetches all Data Store Identifiers by this app
   ///
   /// Needs to be called from Main Thread
   pub async fn fetch_data_store_identifiers(&self) -> crate::Result<Vec<[u8; 16]>> {
@@ -514,7 +514,7 @@ impl<R: Runtime> AppHandle<R> {
   /// }
   ///
   /// let plugin = init_plugin();
-  /// // `.name()` requires the `PLugin` trait import
+  /// // `.name()` requires the `Plugin` trait import
   /// let plugin_name = plugin.name();
   /// tauri::Builder::default()
   ///   .plugin(plugin)
@@ -1583,7 +1583,7 @@ impl<R: Runtime> Builder<R> {
 
   /// Append a custom initialization script.
   ///
-  /// Allow to append custom initialization script instend of replacing entire invoke system.
+  /// Allow to append custom initialization script instead of replacing entire invoke system.
   ///
   /// # Examples
   ///
