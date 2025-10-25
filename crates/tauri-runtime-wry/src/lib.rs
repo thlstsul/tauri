@@ -4033,7 +4033,7 @@ fn handle_event_loop<T: UserEvent>(
     active_tracing_spans,
   } = context;
   if *control_flow != ControlFlow::Exit {
-    *control_flow = ControlFlow::WaitUntil(std::time::Instant::now() + std::time::Duration::from_secs(60));
+    *control_flow = ControlFlow::Wait;
   }
 
   match event {
