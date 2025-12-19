@@ -6,7 +6,6 @@
 #![allow(missing_docs)]
 
 use tauri_runtime::{
-  device_events::DeviceEventFilter,
   dpi::{PhysicalPosition, PhysicalSize, Position, Size},
   monitor::Monitor,
   webview::{DetachedWebview, PendingWebview},
@@ -14,9 +13,9 @@ use tauri_runtime::{
     CursorIcon, DetachedWindow, DetachedWindowWebview, PendingWindow, RawWindow, WindowBuilder,
     WindowBuilderBase, WindowEvent, WindowId,
   },
-  Error, EventLoopProxy, ExitRequestedEventAction, Icon, ProgressBarState, Result, RunEvent,
-  Runtime, RuntimeHandle, RuntimeInitArgs, UserAttentionType, UserEvent, WebviewDispatch,
-  WindowDispatch, WindowEventId,
+  DeviceEventFilter, Error, EventLoopProxy, ExitRequestedEventAction, Icon, ProgressBarState,
+  Result, RunEvent, Runtime, RuntimeHandle, RuntimeInitArgs, UserAttentionType, UserEvent,
+  WebviewDispatch, WindowDispatch, WindowEventId,
 };
 
 #[cfg(target_os = "macos")]

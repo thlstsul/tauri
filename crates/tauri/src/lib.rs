@@ -221,15 +221,13 @@ pub use {
   },
   self::manager::Asset,
   self::runtime::{
-    device_events::{
-      AxisId, ButtonId, Code, DeviceEvent, DeviceEventFilter, DeviceId, KeyState, MouseScrollDelta,
-    },
+    device_events::{AxisId, ButtonId, Code, DeviceEvent, DeviceId, KeyState, MouseScrollDelta},
     dpi::{
       LogicalPosition, LogicalRect, LogicalSize, LogicalUnit, PhysicalPosition, PhysicalRect,
       PhysicalSize, PhysicalUnit, Pixel, PixelUnit, Position, Rect, Size,
     },
     window::{CursorIcon, DragDropEvent, WindowSizeConstraints},
-    UserAttentionType,
+    DeviceEventFilter, UserAttentionType,
   },
   self::state::{State, StateManager},
   self::utils::{

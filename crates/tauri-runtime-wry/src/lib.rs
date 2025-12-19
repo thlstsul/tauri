@@ -21,7 +21,6 @@ use raw_window_handle::{DisplayHandle, HasDisplayHandle, HasWindowHandle};
 #[cfg(windows)]
 use tauri_runtime::webview::ScrollBarStyle;
 use tauri_runtime::{
-  device_events::DeviceEventFilter,
   dpi::{LogicalPosition, LogicalSize, PhysicalPosition, PhysicalSize, Position, Size},
   monitor::Monitor,
   webview::{DetachedWebview, DownloadEvent, PendingWebview, WebviewIpcHandler},
@@ -29,9 +28,9 @@ use tauri_runtime::{
     CursorIcon, DetachedWindow, DetachedWindowWebview, DragDropEvent, PendingWindow, RawWindow,
     WebviewEvent, WindowBuilder, WindowBuilderBase, WindowEvent, WindowId, WindowSizeConstraints,
   },
-  Cookie, Error, EventLoopProxy, ExitRequestedEventAction, Icon, ProgressBarState,
-  ProgressBarStatus, Result, RunEvent, Runtime, RuntimeHandle, RuntimeInitArgs, UserAttentionType,
-  UserEvent, WebviewDispatch, WebviewEventId, WindowDispatch, WindowEventId,
+  Cookie, DeviceEventFilter, Error, EventLoopProxy, ExitRequestedEventAction, Icon,
+  ProgressBarState, ProgressBarStatus, Result, RunEvent, Runtime, RuntimeHandle, RuntimeInitArgs,
+  UserAttentionType, UserEvent, WebviewDispatch, WebviewEventId, WindowDispatch, WindowEventId,
 };
 
 #[cfg(target_vendor = "apple")]
