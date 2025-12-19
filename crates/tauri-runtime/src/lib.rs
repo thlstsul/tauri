@@ -92,6 +92,18 @@ pub enum UserAttentionType {
   Informational,
 }
 
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(tag = "type")]
+pub enum DeviceEventFilter {
+  /// Always filter out device events.
+  Always,
+  /// Filter out device events while the window is not focused.
+  #[default]
+  Unfocused,
+  /// Report all device events regardless of window focus.
+  Never,
+}
+
 /// Defines the orientation that a window resize will be performed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
 pub enum ResizeDirection {

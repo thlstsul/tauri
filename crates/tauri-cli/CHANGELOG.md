@@ -1,5 +1,62 @@
 # Changelog
 
+## \[2.9.6]
+
+### What's Changed
+
+- [`7b1b3514d`](https://www.github.com/tauri-apps/tauri/commit/7b1b3514df771e6e9859b9f54fa4df332433948e) ([#14621](https://www.github.com/tauri-apps/tauri/pull/14621) by [@Legend-Master](https://www.github.com/tauri-apps/tauri/../../Legend-Master)) Errors like `Error Failed to parse version 2 for for NPM package tauri` when there was no `package-lock.json` file present yet or when using ones like `link:./tauri` are now only logged in `--verbose` mode.
+
+### Dependencies
+
+- Upgraded to `tauri-macos-sign@2.3.2`
+- Upgraded to `tauri-bundler@2.7.5`
+
+## \[2.9.5]
+
+### Bug Fixes
+
+- [`f022b2d1a`](https://www.github.com/tauri-apps/tauri/commit/f022b2d1ae57612e39c75782926f2f341d9034a8) ([#14582](https://www.github.com/tauri-apps/tauri/pull/14582) by [@hrzlgnm](https://www.github.com/tauri-apps/tauri/../../hrzlgnm)) Fixed an issue that caused the cli to error out with missing private key, in case the option `--no-sign` was requested and the `tauri.config` has signing key set and the plugin `tauri-plugin-updater` is used.
+- [`f855caf8a`](https://www.github.com/tauri-apps/tauri/commit/f855caf8a3830aa5dd6d0b039312866a5d9c3606) ([#14481](https://www.github.com/tauri-apps/tauri/pull/14481) by [@Legend-Master](https://www.github.com/tauri-apps/tauri/../../Legend-Master)) Fixed the mismatched tauri package versions check didn't work for pnpm
+- [`79a7d9ec0`](https://www.github.com/tauri-apps/tauri/commit/79a7d9ec01be1a371b8e923848140fea75e9caed) ([#14468](https://www.github.com/tauri-apps/tauri/pull/14468) by [@FabianLars](https://www.github.com/tauri-apps/tauri/../../FabianLars)) Fixed an issue that caused the cli to print errors like `Error Failed to parse version 2 for crate tauri` when there was no `Cargo.lock` file present yet. This will still be logged in `--verbose` mode.
+
+### Performance Improvements
+
+- [`ce98d87ce`](https://www.github.com/tauri-apps/tauri/commit/ce98d87ce0aaa907285852eb80691197424e03c3) ([#14474](https://www.github.com/tauri-apps/tauri/pull/14474) by [@Tunglies](https://www.github.com/tauri-apps/tauri/../../Tunglies)) refactor: remove needless collect. No user facing changes.
+- [`ee3cc4a91`](https://www.github.com/tauri-apps/tauri/commit/ee3cc4a91bf1315ecaefe90f423ffd55ef6c40db) ([#14475](https://www.github.com/tauri-apps/tauri/pull/14475) by [@Tunglies](https://www.github.com/tauri-apps/tauri/../../Tunglies)) perf: remove needless clones in various files for improved performance. No user facing changes.
+
+### Dependencies
+
+- Upgraded to `tauri-bundler@2.7.4`
+- Upgraded to `tauri-macos-sign@2.3.1`
+- Upgraded to `tauri-utils@2.8.1`
+
+## \[2.9.4]
+
+### Bug Fixes
+
+- [`b586ecf1f`](https://www.github.com/tauri-apps/tauri/commit/b586ecf1f4b3b087f9aa6c4668c2c18b1b7925f4) ([#14416](https://www.github.com/tauri-apps/tauri/pull/14416) by [@Legend-Master](https://www.github.com/tauri-apps/tauri/../../Legend-Master)) Premultiply Alpha before Resizing which gets rid of the gray fringe around the icons for svg images.
+
+## \[2.9.3]
+
+### Enhancements
+
+- [`22edc65aa`](https://www.github.com/tauri-apps/tauri/commit/22edc65aad0b3e45515008e8e0866112da70c8a1) ([#14408](https://www.github.com/tauri-apps/tauri/pull/14408) by [@FabianLars](https://www.github.com/tauri-apps/tauri/../../FabianLars)) Set user-agent in bundler and cli http requests when fetching build tools.
+- [`779612ac8`](https://www.github.com/tauri-apps/tauri/commit/779612ac8425a787626da4cefdb9eaf7d63bea18) ([#14379](https://www.github.com/tauri-apps/tauri/pull/14379) by [@moubctez](https://www.github.com/tauri-apps/tauri/../../moubctez)) Properly read the `required-features` field of binaries in Cargo.toml to prevent bundling issues when the features weren't enabled.
+
+### Bug Fixes
+
+- [`fd8c30b4f`](https://www.github.com/tauri-apps/tauri/commit/fd8c30b4f1bca8dd7165c5c0ebe7fbfd17662153) ([#14353](https://www.github.com/tauri-apps/tauri/pull/14353) by [@ChaseKnowlden](https://www.github.com/tauri-apps/tauri/../../ChaseKnowlden)) Premultiply Alpha before Resizing which gets rid of the gray fringe around the icons.
+
+### Dependencies
+
+- Upgraded to `tauri-bundler@2.7.3`
+
+## \[2.9.2]
+
+### Dependencies
+
+- Upgraded to `tauri-bundler@2.7.2`
+
 ## \[2.9.1]
 
 ### Dependencies

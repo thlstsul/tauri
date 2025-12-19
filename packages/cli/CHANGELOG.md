@@ -1,5 +1,51 @@
 # Changelog
 
+## \[2.9.6]
+
+### Dependencies
+
+- Upgraded to `tauri-cli@2.9.6`
+
+## \[2.9.5]
+
+### Bug Fixes
+
+- [`f855caf8a`](https://www.github.com/tauri-apps/tauri/commit/f855caf8a3830aa5dd6d0b039312866a5d9c3606) ([#14481](https://www.github.com/tauri-apps/tauri/pull/14481) by [@Legend-Master](https://www.github.com/tauri-apps/tauri/../../Legend-Master)) Fixed the mismatched tauri package versions check didn't work for pnpm
+
+### Performance Improvements
+
+- [`ce98d87ce`](https://www.github.com/tauri-apps/tauri/commit/ce98d87ce0aaa907285852eb80691197424e03c3) ([#14474](https://www.github.com/tauri-apps/tauri/pull/14474) by [@Tunglies](https://www.github.com/tauri-apps/tauri/../../Tunglies)) refactor: remove needless collect. No user facing changes.
+
+### Dependencies
+
+- Upgraded to `tauri-cli@2.9.5`
+
+## \[2.9.4]
+
+### Bug Fixes
+
+- [`b586ecf1f`](https://www.github.com/tauri-apps/tauri/commit/b586ecf1f4b3b087f9aa6c4668c2c18b1b7925f4) ([#14416](https://www.github.com/tauri-apps/tauri/pull/14416) by [@Legend-Master](https://www.github.com/tauri-apps/tauri/../../Legend-Master)) Premultiply Alpha before Resizing which gets rid of the gray fringe around the icons for svg images.
+
+### Dependencies
+
+- Upgraded to `tauri-cli@2.9.4`
+
+## \[2.9.3]
+
+### Bug Fixes
+
+- [`fd8c30b4f`](https://www.github.com/tauri-apps/tauri/commit/fd8c30b4f1bca8dd7165c5c0ebe7fbfd17662153) ([#14353](https://www.github.com/tauri-apps/tauri/pull/14353) by [@ChaseKnowlden](https://www.github.com/tauri-apps/tauri/../../ChaseKnowlden)) Premultiply Alpha before Resizing which gets rid of the gray fringe around the icons.
+
+### Dependencies
+
+- Upgraded to `tauri-cli@2.9.3`
+
+## \[2.9.2]
+
+### Dependencies
+
+- Upgraded to `tauri-cli@2.9.2`
+
 ## \[2.9.1]
 
 ### Dependencies
