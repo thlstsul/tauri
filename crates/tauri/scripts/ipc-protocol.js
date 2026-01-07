@@ -21,10 +21,12 @@
 
   function sendIpcMessage(message) {
     const { cmd, callback, error, payload, options } = message
+    const donotUseCustomProtocol = options && options.donotUseCustomProtocol
 
     if (
       !customProtocolIpcFailed
       && (canUseCustomProtocol || cmd === fetchChannelDataCommand)
+      && !donotUseCustomProtocol
     ) {
       const { contentType, data } = processIpcMessage(payload)
 
