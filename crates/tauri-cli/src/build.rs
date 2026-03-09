@@ -11,7 +11,7 @@ use crate::{
     config::{get_config, ConfigMetadata, FrontendDist},
   },
   info::plugins::check_mismatched_packages,
-  interface::{rust::get_cargo_target_dir, AppInterface, Interface},
+  interface::{rust::get_cargo_target_dir, AppInterface},
   ConfigValue, Result,
 };
 use clap::{ArgAction, Parser};
@@ -39,7 +39,7 @@ pub struct Options {
   #[clap(short, long)]
   pub target: Option<String>,
   /// Space or comma separated list of features to activate
-  #[clap(short, long, action = ArgAction::Append, num_args(0..))]
+  #[clap(short, long, action = ArgAction::Append, num_args(0..), value_delimiter = ',')]
   pub features: Vec<String>,
   /// Space or comma separated list of bundles to package.
   #[clap(short, long, action = ArgAction::Append, num_args(0..), value_delimiter = ',')]
@@ -104,7 +104,7 @@ pub fn command(mut options: Options, verbosity: u8) -> Result<()> {
 
   let mut interface = AppInterface::new(&config, options.target.clone(), dirs.tauri)?;
 
-  setup(&interface, &mut options, &config, false, &dirs)?;
+  setup(&interface, &mut options, &config, &dirs, false)?;
 
   if let Some(minimum_system_version) = &config.bundle.macos.minimum_system_version {
     std::env::set_var("MACOSX_DEPLOYMENT_TARGET", minimum_system_version);
@@ -117,7 +117,7 @@ pub fn command(mut options: Options, verbosity: u8) -> Result<()> {
 
   let bin_path = interface.build(interface_options, &dirs)?;
 
-  log::info!(action ="Built"; "application at: {}", tauri_utils::display_path(bin_path));
+  log::info!(action = "Built"; "application at: {}", tauri_utils::display_path(bin_path));
 
   let app_settings = interface.app_settings();
 
@@ -129,8 +129,8 @@ pub fn command(mut options: Options, verbosity: u8) -> Result<()> {
       &interface,
       &*app_settings,
       &config,
-      &out_dir,
       &dirs,
+      &out_dir,
     )?;
   }
 
@@ -141,8 +141,8 @@ pub fn setup(
   interface: &AppInterface,
   options: &mut Options,
   config: &ConfigMetadata,
-  mobile: bool,
   dirs: &Dirs,
+  mobile: bool,
 ) -> Result<()> {
   // TODO: Maybe optimize this to run in parallel in the future
   // see https://github.com/tauri-apps/tauri/pull/13993#discussion_r2280697117

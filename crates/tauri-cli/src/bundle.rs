@@ -20,7 +20,7 @@ use crate::{
     config::{get_config, ConfigMetadata},
     updater_signature,
   },
-  interface::{AppInterface, AppSettings, Interface},
+  interface::{AppInterface, AppSettings},
   ConfigValue,
 };
 
@@ -70,7 +70,7 @@ pub struct Options {
   #[clap(short, long)]
   pub config: Vec<ConfigValue>,
   /// Space or comma separated list of features, should be the same features passed to `tauri build` if any.
-  #[clap(short, long, action = ArgAction::Append, num_args(0..))]
+  #[clap(short, long, action = ArgAction::Append, num_args(0..), value_delimiter = ',')]
   pub features: Vec<String>,
   /// Target triple to build against.
   ///
@@ -154,8 +154,8 @@ pub fn command(options: Options, verbosity: u8) -> crate::Result<()> {
     &interface,
     &*app_settings,
     &config,
-    &out_dir,
     &dirs,
+    &out_dir,
   )
 }
 
@@ -167,8 +167,8 @@ pub fn bundle<A: AppSettings>(
   interface: &AppInterface,
   app_settings: &A,
   config: &ConfigMetadata,
-  out_dir: &Path,
   dirs: &Dirs,
+  out_dir: &Path,
 ) -> crate::Result<()> {
   let package_types: Vec<PackageType> = if let Some(bundles) = &options.bundles {
     bundles.iter().map(|bundle| bundle.0).collect::<Vec<_>>()
@@ -287,6 +287,9 @@ fn sign_updaters(
   } else {
     private_key
   };
+  if password.is_none() {
+    log::info!("Decrypting updater signing key, expect a prompt for password")
+  }
   let secret_key =
     updater_signature::secret_key(private_key, password).context("failed to decode secret key")?;
   let public_key = updater_signature::pub_key(pubkey).context("failed to decode pubkey")?;

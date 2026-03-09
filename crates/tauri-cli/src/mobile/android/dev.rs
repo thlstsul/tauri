@@ -14,7 +14,7 @@ use crate::{
     config::{get_config as get_tauri_config, ConfigMetadata},
     flock,
   },
-  interface::{AppInterface, Interface, MobileOptions, Options as InterfaceOptions},
+  interface::{AppInterface, MobileOptions, Options as InterfaceOptions},
   mobile::{
     android::generate_tauri_properties, use_network_address_for_dev_url, write_options, CliOptions,
     DevChild, DevHost, DevProcess, TargetDevice,
@@ -35,7 +35,6 @@ use cargo_mobile2::{
 };
 use url::Host;
 
-use std::sync::Mutex;
 use std::{env::set_current_dir, net::Ipv4Addr, path::PathBuf};
 
 #[derive(Debug, Clone, Parser)]
@@ -45,7 +44,7 @@ use std::{env::set_current_dir, net::Ipv4Addr, path::PathBuf};
 )]
 pub struct Options {
   /// List of cargo features to activate
-  #[clap(short, long, action = ArgAction::Append, num_args(0..))]
+  #[clap(short, long, action = ArgAction::Append, num_args(0..), value_delimiter = ',')]
   pub features: Vec<String>,
   /// Exit on panic
   #[clap(short, long)]
@@ -183,19 +182,25 @@ fn run_command(options: Options, noise_level: NoiseLevel, dirs: Dirs) -> Result<
     .map(|d| d.target().triple.to_string())
     .unwrap_or_else(|| Target::all().values().next().unwrap().triple.into());
   dev_options.target = Some(target_triple);
+  dev_options.args.push("--lib".into());
 
-  let (interface, config, metadata) = {
-    let interface = AppInterface::new(&tauri_config, dev_options.target.clone(), dirs.tauri)?;
+  let interface = AppInterface::new(&tauri_config, dev_options.target.clone(), dirs.tauri)?;
 
-    let app = get_app(MobileTarget::Android, &tauri_config, &interface, dirs.tauri);
-    let (config, metadata) = get_config(
-      &app,
-      &tauri_config,
-      dev_options.features.as_ref(),
-      &Default::default(),
-    );
-    (interface, config, metadata)
-  };
+  let app = get_app(MobileTarget::Android, &tauri_config, &interface, dirs.tauri);
+  let (config, metadata) = get_config(
+    &app,
+    &tauri_config,
+    dev_options.features.as_ref(),
+    &CliOptions {
+      dev: true,
+      features: dev_options.features.clone(),
+      args: dev_options.args.clone(),
+      noise_level,
+      vars: Default::default(),
+      config: dev_options.config.clone(),
+      target_device: None,
+    },
+  );
 
   set_current_dir(dirs.tauri).context("failed to set current directory to Tauri directory")?;
 
@@ -256,8 +261,6 @@ fn run_dev(
 
   crate::dev::setup(&interface, &mut dev_options, &mut tauri_config, dirs)?;
 
-  let tauri_config = Mutex::new(tauri_config);
-
   let interface_options = InterfaceOptions {
     debug: !dev_options.release_mode,
     target: dev_options.target.clone(),
@@ -270,7 +273,7 @@ fn run_dev(
 
   configure_cargo(&mut env, config)?;
 
-  generate_tauri_properties(config, &tauri_config.lock().unwrap(), true)?;
+  generate_tauri_properties(config, &tauri_config, true)?;
 
   let installed_targets =
     crate::interface::rust::installation::installed_targets().unwrap_or_default();
@@ -306,7 +309,7 @@ fn run_dev(
 
   let open = options.open;
   interface.mobile_dev(
-    &tauri_config,
+    &mut tauri_config,
     MobileOptions {
       debug: !options.release_mode,
       features: options.features,
@@ -315,7 +318,7 @@ fn run_dev(
       no_watch: options.no_watch,
       additional_watch_folders: options.additional_watch_folders,
     },
-    |options| {
+    |options, tauri_config| {
       let cli_options = CliOptions {
         dev: true,
         features: options.features.clone(),
@@ -329,9 +332,9 @@ fn run_dev(
         }),
       };
 
-      let _handle = write_options(&tauri_config.lock().unwrap(), cli_options)?;
+      let _handle = write_options(tauri_config, cli_options)?;
 
-      inject_resources(config, &tauri_config.lock().unwrap())?;
+      inject_resources(config, tauri_config)?;
 
       if open {
         open_and_wait(config, &env)
