@@ -664,7 +664,7 @@ pub trait Manager<R: Runtime>: sealed::ManagerBase<R> {
   ///
   /// #[tauri::command]
   /// fn string_command<'r>(state: State<'r, MyString>) {
-  ///     println!("state: {}", state.inner().0);
+  ///     println!("state: {}", state.0);
   /// }
   ///
   /// tauri::Builder::default()
@@ -754,13 +754,14 @@ pub trait Manager<R: Runtime>: sealed::ManagerBase<R> {
 
   /// Gets the managed [`Env`].
   fn env(&self) -> Env {
-    self.state::<Env>().inner().clone()
+    use std::ops::Deref;
+    self.state::<Env>().deref().clone()
   }
 
   /// Gets the scope for the asset protocol.
   #[cfg(feature = "protocol-asset")]
   fn asset_protocol_scope(&self) -> scope::fs::Scope {
-    self.state::<Scopes>().inner().asset_protocol.clone()
+    self.state::<Scopes>().asset_protocol.clone()
   }
 
   /// The path resolver.
@@ -1069,16 +1070,19 @@ pub(crate) mod sealed {
   }
 }
 
+#[cfg(desktop)]
 struct UnsafeSend<T>(T);
+#[cfg(desktop)]
 unsafe impl<T> Send for UnsafeSend<T> {}
 
+#[cfg(desktop)]
 impl<T> UnsafeSend<T> {
   fn take(self) -> T {
     self.0
   }
 }
 
-#[allow(unused)]
+#[cfg(desktop)]
 macro_rules! run_main_thread {
   ($handle:ident, $ex:expr) => {{
     use std::sync::mpsc::channel;
@@ -1093,7 +1097,7 @@ macro_rules! run_main_thread {
   }};
 }
 
-#[allow(unused)]
+#[cfg(desktop)]
 pub(crate) use run_main_thread;
 
 #[cfg(any(test, feature = "test"))]
@@ -1219,9 +1223,9 @@ mod z85 {
     assert_eq!(bytes.len() % 4, 0);
 
     let mut buf = String::with_capacity(bytes.len() * 5 / 4);
-    for chunk in bytes.chunks_exact(4) {
+    for chunk in bytes.as_chunks::<4>().0 {
       let mut chars = [0u8; 5];
-      let mut chunk = u32::from_be_bytes(chunk.try_into().unwrap()) as usize;
+      let mut chunk = u32::from_be_bytes(*chunk) as usize;
       for byte in chars.iter_mut().rev() {
         *byte = TABLE[chunk % 85];
         chunk /= 85;
